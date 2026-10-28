@@ -1,0 +1,812 @@
+<title>assessment-1 revision</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: one centred column. A "slide sorter" strip of squares shows progress, the question sits on a slide-like card, and every answer opens a lesson note under each option. */
+:root {
+  color-scheme: light;
+  --bg: #A8DAFF;
+  --surface: #FFFDF1;
+  --ink: #2D3A5E;
+  --muted: #55617F;
+  --line: #86CFAA;
+  --accent: #FFD84D;
+  --on-accent: #2D3A5E;
+  --soft-blue: #E3F1FF;
+  --blue-line: #9CC8EE;
+  --ok: #1B7A56;
+  --ok-bg: #DFF5E8;
+  --bad: #B3302F;
+  --bad-bg: #FFE6E1;
+  --focus: #3F6FD8;
+  --sq: #FFFFFF;
+  --mark: #FFE066;
+  --display: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg) url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22440%22%20height%3D%22440%22%20viewBox%3D%220%200%20440%20440%22%20shape-rendering%3D%22crispEdges%22%3E%3Cg%20fill%3D%22%23FFFFFF%22%20%3E%3Crect%20x%3D%2264%22%20y%3D%2224%22%20width%3D%2220%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%2254%22%20y%3D%2229%22%20width%3D%2240%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22109%22%20y%3D%2229%22%20width%3D%2210%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%2244%22%20y%3D%2234%22%20width%3D%2260%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22109%22%20y%3D%2234%22%20width%3D%2220%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2239%22%20width%3D%22100%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%2229%22%20y%3D%2244%22%20width%3D%22110%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%2224%22%20y%3D%2249%22%20width%3D%22120%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%2229%22%20y%3D%2254%22%20width%3D%22110%22%20height%3D%225%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFFFFF%22%20%3E%3Crect%20x%3D%22302%22%20y%3D%22250%22%20width%3D%2216%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22294%22%20y%3D%22254%22%20width%3D%2232%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22338%22%20y%3D%22254%22%20width%3D%228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22286%22%20y%3D%22258%22%20width%3D%2248%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22338%22%20y%3D%22258%22%20width%3D%2216%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22278%22%20y%3D%22262%22%20width%3D%2280%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22274%22%20y%3D%22266%22%20width%3D%2288%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22270%22%20y%3D%22270%22%20width%3D%2296%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22274%22%20y%3D%22274%22%20width%3D%2288%22%20height%3D%224%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23E8F5FF%22%20%3E%3Crect%20x%3D%22354%22%20y%3D%2270%22%20width%3D%2212%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22348%22%20y%3D%2273%22%20width%3D%2224%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22381%22%20y%3D%2273%22%20width%3D%226%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22342%22%20y%3D%2276%22%20width%3D%2236%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22381%22%20y%3D%2276%22%20width%3D%2212%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22336%22%20y%3D%2279%22%20width%3D%2260%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22333%22%20y%3D%2282%22%20width%3D%2266%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22330%22%20y%3D%2285%22%20width%3D%2272%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22333%22%20y%3D%2288%22%20width%3D%2266%22%20height%3D%223%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFFFFF%22%20%3E%3Crect%20x%3D%22124%22%20y%3D%22150%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22148%22%20y%3D%22150%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22172%22%20y%3D%22150%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22192%22%20y%3D%22150%22%20width%3D%2216%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22224%22%20y%3D%22150%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22248%22%20y%3D%22150%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22264%22%20y%3D%22150%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22276%22%20y%3D%22150%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22296%22%20y%3D%22150%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22312%22%20y%3D%22150%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22320%22%20y%3D%22150%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22120%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22136%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22144%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22160%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22168%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22184%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22192%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22208%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22224%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22248%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22264%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22272%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22288%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22296%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22308%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22320%22%20y%3D%22154%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22120%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22144%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22160%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22168%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22184%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22192%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22208%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22224%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22248%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22264%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22272%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22296%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22304%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22320%22%20y%3D%22158%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22120%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22128%22%20y%3D%22162%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22144%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22160%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22168%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22184%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22192%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22208%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22224%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22248%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22264%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22272%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22296%22%20y%3D%22162%22%20width%3D%228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22320%22%20y%3D%22162%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22120%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22136%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22144%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22160%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22168%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22184%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22192%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22208%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22224%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22248%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22264%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22272%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22296%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22304%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22320%22%20y%3D%22166%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22120%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22136%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22144%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22160%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22168%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22184%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22192%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22208%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22224%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22248%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22264%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22272%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22288%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22296%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22308%22%20y%3D%22170%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22124%22%20y%3D%22174%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22148%22%20y%3D%22174%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22172%22%20y%3D%22174%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22192%22%20y%3D%22174%22%20width%3D%2216%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22224%22%20y%3D%22174%22%20width%3D%2220%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22252%22%20y%3D%22174%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22276%22%20y%3D%22174%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22296%22%20y%3D%22174%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22312%22%20y%3D%22174%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22320%22%20y%3D%22174%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFD84D%22%20%3E%3Crect%20x%3D%22335%22%20y%3D%22150%22%20width%3D%2210%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22350%22%20y%3D%22150%22%20width%3D%2210%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22330%22%20y%3D%22155%22%20width%3D%2235%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22330%22%20y%3D%22160%22%20width%3D%2235%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22335%22%20y%3D%22165%22%20width%3D%2225%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22340%22%20y%3D%22170%22%20width%3D%2215%22%20height%3D%225%22%2F%3E%3Crect%20x%3D%22345%22%20y%3D%22175%22%20width%3D%225%22%20height%3D%225%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%235CC48F%22%20%3E%3Crect%20x%3D%2256%22%20y%3D%22250%22%20width%3D%2212%22%20height%3D%226%22%2F%3E%3Crect%20x%3D%2274%22%20y%3D%22250%22%20width%3D%2212%22%20height%3D%226%22%2F%3E%3Crect%20x%3D%2250%22%20y%3D%22256%22%20width%3D%2242%22%20height%3D%226%22%2F%3E%3Crect%20x%3D%2250%22%20y%3D%22262%22%20width%3D%2242%22%20height%3D%226%22%2F%3E%3Crect%20x%3D%2256%22%20y%3D%22268%22%20width%3D%2230%22%20height%3D%226%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%22274%22%20width%3D%2218%22%20height%3D%226%22%2F%3E%3Crect%20x%3D%2268%22%20y%3D%22280%22%20width%3D%226%22%20height%3D%226%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFFFFF%22%20%3E%3Crect%20x%3D%22204%22%20y%3D%2260%22%20width%3D%228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22216%22%20y%3D%2260%22%20width%3D%228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22200%22%20y%3D%2264%22%20width%3D%2228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22200%22%20y%3D%2268%22%20width%3D%2228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22204%22%20y%3D%2272%22%20width%3D%2220%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22208%22%20y%3D%2276%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22212%22%20y%3D%2280%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFD84D%22%20%3E%3Crect%20x%3D%22134%22%20y%3D%22350%22%20width%3D%228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22146%22%20y%3D%22350%22%20width%3D%228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22130%22%20y%3D%22354%22%20width%3D%2228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22130%22%20y%3D%22358%22%20width%3D%2228%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22134%22%20y%3D%22362%22%20width%3D%2220%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22138%22%20y%3D%22366%22%20width%3D%2212%22%20height%3D%224%22%2F%3E%3Crect%20x%3D%22142%22%20y%3D%22370%22%20width%3D%224%22%20height%3D%224%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%235CC48F%22%20%3E%3Crect%20x%3D%22383%22%20y%3D%22380%22%20width%3D%226%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22392%22%20y%3D%22380%22%20width%3D%226%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22380%22%20y%3D%22383%22%20width%3D%2221%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22380%22%20y%3D%22386%22%20width%3D%2221%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22383%22%20y%3D%22389%22%20width%3D%2215%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22386%22%20y%3D%22392%22%20width%3D%229%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%22389%22%20y%3D%22395%22%20width%3D%223%22%20height%3D%223%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23FFFFFF%22%20%3E%3Crect%20x%3D%2223%22%20y%3D%22150%22%20width%3D%226%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%2232%22%20y%3D%22150%22%20width%3D%226%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%22153%22%20width%3D%2221%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%22156%22%20width%3D%2221%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%22159%22%20width%3D%2215%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%2226%22%20y%3D%22162%22%20width%3D%229%22%20height%3D%223%22%2F%3E%3Crect%20x%3D%2229%22%20y%3D%22165%22%20width%3D%223%22%20height%3D%223%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat; background-attachment: fixed; image-rendering: pixelated; color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.5; }
+.wrap {
+  max-width: 820px; margin: 0 auto; padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button, input { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; text-wrap: balance; line-height: 1.15; }
+p { margin: 0; }
+.eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+.banner { display: block; max-width: 100%; height: auto; margin: 0 0 10px; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; min-height: 36px; }
+.btn {
+  appearance: none; border: 2px solid var(--ink); background: var(--accent); color: var(--on-accent);
+  font-family: var(--display); font-weight: 600; font-size: 19px; padding: 11px 24px; border-radius: 12px; cursor: pointer;
+  box-shadow: 0 3px 0 var(--ink);
+}
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.btn.ghost { background: var(--surface); color: var(--ink); box-shadow: none; font-size: 16px; padding: 8px 16px; }
+.btn.small { font-size: 15px; padding: 7px 14px; }
+.card { background: var(--surface); border: 2px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: 0 6px 0 #86CFAA; }
+
+/* welcome */
+#welcome h1 { font-size: clamp(30px, 6vw, 46px); margin: 6px 0 12px; }
+.lead { color: var(--muted); max-width: 56ch; margin-bottom: 22px; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.field label, legend { font-weight: 800; font-size: 15px; }
+.field input[type=text] { height: 50px; border: 2px solid var(--blue-line); border-radius: 10px; padding: 0 14px; background: var(--soft-blue); font-size: 18px; width: 100%; }
+.field input[type=text]:focus, .field select:focus { border-color: var(--focus); }
+.field select { height: 50px; border: 2px solid var(--line); border-radius: 10px; padding: 0 12px; background: var(--soft-blue); font-size: 18px; width: 100%; }
+.err { color: var(--bad); font-weight: 800; font-size: 15px; }
+fieldset { border: 0; padding: 0; margin: 0 0 20px; min-width: 0; }
+.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 8px; }
+.mode { display: flex; gap: 10px; align-items: flex-start; border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px; cursor: pointer; background: var(--soft-blue); }
+.mode:has(input:checked) { border-color: var(--ink); background: var(--surface); box-shadow: 0 3px 0 var(--accent); }
+.mode input { margin-top: 5px; accent-color: var(--ink); }
+.mode b { font-family: var(--display); font-weight: 600; font-size: 18px; display: block; }
+.mode span { color: var(--muted); font-size: 15px; }
+.note { color: var(--muted); font-size: 14px; margin-top: 14px; }
+.how { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 18px; }
+.how div { border-left: 4px solid var(--accent); padding: 2px 0 2px 12px; font-size: 15px; color: var(--muted); }
+.how b { color: var(--ink); display: block; }
+
+/* play */
+.hud { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 18px; margin-bottom: 10px; }
+.hud .slideno { font-family: var(--display); font-weight: 600; font-size: 20px; }
+.hud .stats { display: flex; gap: 18px; font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums; }
+.hud .stats span span { color: var(--muted); font-weight: 600; margin-right: 4px; }
+.sorter { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
+.sq { width: 14px; height: 10px; border-radius: 2px; background: var(--sq); }
+.sq.right { background: var(--ok); }
+.sq.wrong { background: var(--bad); }
+.sq.now { background: var(--accent); outline: 2px solid var(--ink); outline-offset: 1px; }
+.qcard { padding: 24px 24px 20px; }
+.qtext { font-family: var(--display); font-weight: 500; font-size: clamp(20px, 3.4vw, 25px); line-height: 1.35; margin-bottom: 18px; overflow-wrap: anywhere; }
+mark { background: var(--mark); color: var(--on-accent); border-radius: 4px; padding: 0 3px; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.optwrap { display: flex; flex-direction: column; }
+.opt {
+  appearance: none; display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left;
+  width: 100%; background: var(--soft-blue); border: 2px solid var(--blue-line); border-radius: 12px; padding: 10px 14px; cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.opt:hover { border-color: var(--ink); }
+.chip { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); border: 2px solid var(--blue-line); display: grid; place-items: center; font-family: var(--display); font-weight: 600; font-size: 17px; }
+.optwrap.locked .opt { cursor: default; }
+.optwrap.locked .opt:hover { border-color: var(--blue-line); }
+.optwrap.right .opt { background: var(--ok-bg); border-color: var(--ok); }
+.optwrap.right .chip { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.optwrap.picked-wrong .opt { background: var(--bad-bg); border-color: var(--bad); }
+.optwrap.picked-wrong .chip { background: var(--bad); border-color: var(--bad); color: var(--surface); }
+.why { font-size: 15px; line-height: 1.45; padding: 8px 14px 4px 64px; color: var(--muted); }
+.why .tag { font-weight: 800; color: var(--ink); margin-right: 4px; }
+.optwrap.right .why .tag { color: var(--ok); }
+.optwrap.picked-wrong .why .tag { color: var(--bad); }
+.fb { border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.fb.right { background: var(--ok-bg); border: 2px solid var(--ok); }
+.fb.wrong { background: var(--bad-bg); border: 2px solid var(--bad); }
+.fb h3 { font-size: 22px; margin-bottom: 4px; }
+.fb.right h3 { color: var(--ok); }
+.fb.wrong h3 { color: var(--bad); }
+.fb p + p { margin-top: 4px; }
+.fb .ans { font-weight: 800; overflow-wrap: anywhere; }
+.nextbar { position: sticky; bottom: env(safe-area-inset-bottom, 0px); display: flex; justify-content: flex-end; padding: 12px 0 4px; margin-top: 8px; background: linear-gradient(to top, var(--surface) 70%, transparent); }
+
+/* drag and drop */
+.drag { display: flex; flex-direction: column; gap: 12px; }
+.dhelp { color: var(--muted); font-size: 15px; }
+.drows { display: flex; flex-direction: column; gap: 10px; }
+.drow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 220px); gap: 8px 14px; align-items: center; border: 2px solid var(--blue-line); background: var(--soft-blue); border-radius: 12px; padding: 10px 12px; }
+.drow .dprompt { font-weight: 700; overflow-wrap: anywhere; }
+.dslot { min-height: 48px; border: 2px dashed var(--line); border-radius: 10px; background: var(--surface); display: flex; align-items: center; justify-content: center; padding: 4px; cursor: pointer; }
+.dslot .ph { color: var(--muted); font-size: 14px; font-weight: 700; }
+.dslot.over { border-style: solid; border-color: var(--focus); background: #fff; }
+.dslot.target { border-color: var(--focus); }
+.dslot:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.drow .dwhy { grid-column: 1 / -1; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.drow .dwhy .tag { font-weight: 800; margin-right: 4px; color: var(--ink); }
+.drow.right { border-color: var(--ok); background: var(--ok-bg); }
+.drow.right .dwhy .tag { color: var(--ok); }
+.drow.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.drow.wrong .dwhy .tag { color: var(--bad); }
+.dtray { position: sticky; bottom: 8px; z-index: 5; box-shadow: 0 -6px 12px var(--surface); display: flex; flex-wrap: wrap; gap: 10px; padding: 12px; min-height: 64px; border: 2px dashed var(--line); border-radius: 12px; background: var(--bg); }
+.dtray { background: var(--bg); }
+.dtray:empty::before { content: 'All placed. Press Check my answers.'; color: var(--ink); font-weight: 700; font-size: 15px; align-self: center; }
+.dchip { appearance: none; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; border: 2px solid var(--ink); background: var(--accent); color: var(--on-accent); font-family: var(--display); font-weight: 600; font-size: 18px; padding: 8px 16px; border-radius: 12px; box-shadow: 0 3px 0 var(--ink); }
+.dchip.mk1 { background: #BFE0FF; }
+.dchip.mk2 { background: var(--accent); }
+.dchip.tick { background: #C6F0D6; }
+.dchip.cross { background: #FFD0CC; }
+.dchip.sel { outline: 3px solid var(--focus); outline-offset: 2px; }
+.dchip.lifting { opacity: .35; }
+.dchip.ghost { position: fixed; z-index: 50; pointer-events: none; transform: translate(-50%, -60%) rotate(-3deg); opacity: .95; }
+.dslot .dchip { box-shadow: none; font-size: 17px; padding: 6px 12px; width: 100%; }
+.dslot .dchip { background: var(--accent); }
+.dslot .dchip.mk1 { background: #BFE0FF; }
+.dslot .dchip.mk2 { background: var(--accent); }
+.dslot .dchip.tick { background: #C6F0D6; }
+.dslot .dchip.cross { background: #FFD0CC; }
+.drow.right .dslot .dchip, .drow.right .dslot .dchip.tick, .drow.right .dslot .dchip.cross, .drow.right .dslot .dchip.mk1, .drow.right .dslot .dchip.mk2 { background: var(--ok); color: #fff; border-color: var(--ok); }
+.drow.wrong .dslot .dchip, .drow.wrong .dslot .dchip.tick, .drow.wrong .dslot .dchip.cross, .drow.wrong .dslot .dchip.mk1, .drow.wrong .dslot .dchip.mk2 { background: var(--bad); color: #fff; border-color: var(--bad); }
+.drow.right .dslot, .drow.wrong .dslot { cursor: default; border-style: solid; }
+@media (max-width: 520px) {
+  .drow { grid-template-columns: minmax(0, 1fr) 124px; gap: 6px 10px; padding: 8px 10px; }
+  .drow .dprompt { font-size: 14.5px; line-height: 1.3; }
+  .dslot { min-height: 44px; padding: 3px; }
+  .dslot .ph { font-size: 12.5px; }
+  .dslot .dchip { font-size: 14.5px; padding: 5px 4px; }
+  .dchip { font-size: 16px; padding: 7px 12px; }
+}
+
+/* done */
+.scorebox { text-align: center; padding: 8px 0 18px; }
+.big { font-family: var(--display); font-weight: 600; font-size: clamp(56px, 14vw, 92px); line-height: 1; font-variant-numeric: tabular-nums; }
+.big small { font-size: .45em; color: var(--muted); }
+.bar { height: 14px; border-radius: 7px; background: var(--sq); overflow: hidden; max-width: 420px; margin: 14px auto 12px; }
+.bar i { display: block; height: 100%; background: var(--ok); width: 0; transition: width .8s ease; }
+.verdict { font-family: var(--display); font-weight: 600; font-size: 24px; }
+.kpis { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; margin: 14px 0 6px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.kpis span span { color: var(--muted); font-weight: 600; margin-right: 4px; }
+.savestat { text-align: center; font-weight: 800; font-size: 15px; margin: 8px 0 14px; }
+.savestat.ok { color: var(--ok); }
+.savestat.bad { color: var(--bad); }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 16px 0 6px; }
+.send { border: 2px solid var(--ink); border-radius: 14px; padding: 16px 18px 18px; margin: 4px 0 16px; background: var(--soft-blue); }
+.send h2 { font-size: 22px; margin-bottom: 4px; }
+.send p { color: var(--muted); }
+.vals { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 12px 0 16px; }
+.vals div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; min-width: 0; }
+.vals dt { font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.vals dd { margin: 0; font-family: var(--display); font-weight: 600; font-size: 22px; overflow-wrap: anywhere; }
+.vals small { font-family: var(--body); font-size: 14px; color: var(--muted); font-weight: 600; }
+a.btn { display: inline-block; text-decoration: none; }
+.review { margin-top: 22px; }
+.review h2 { font-size: 22px; margin-bottom: 10px; }
+.miss { border-top: 1px solid var(--line); padding: 12px 0; }
+.miss .mq { font-weight: 800; overflow-wrap: anywhere; }
+.miss .ma { color: var(--ok); font-weight: 800; overflow-wrap: anywhere; }
+.miss .mn { color: var(--muted); font-size: 14px; }
+textarea { width: 100%; min-height: 84px; border: 2px solid var(--line); border-radius: 10px; background: var(--soft-blue); padding: 10px; font-size: 14px; resize: vertical; }
+
+/* teacher board */
+.tablewrap { overflow-x: auto; margin: 12px 0 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td.nm { white-space: normal; min-width: 140px; font-weight: 800; }
+.pill { display: inline-block; padding: 1px 10px; border-radius: 99px; font-size: 13px; font-weight: 800; border: 1px solid currentColor; }
+.pill.done { color: var(--ok); }
+.pill.going { color: var(--muted); }
+.tgroup { margin: 18px 0 8px; }
+.tgroup h3 { font-size: 21px; }
+.tgroup .tablewrap { margin: 6px 0 0; }
+td.act { white-space: nowrap; text-align: right; }
+.tgroup table { table-layout: fixed; min-width: 600px; }
+.tgroup th:nth-child(1) { width: 34%; }
+.tgroup th:nth-child(2) { width: 12%; }
+.tgroup th:nth-child(3) { width: 18%; }
+.tgroup th:nth-child(4) { width: 10%; }
+.tgroup th:nth-child(5) { width: 26%; }
+td.act .ask { font-size: 14px; font-weight: 800; margin-right: 8px; color: var(--bad); }
+.btn.danger { border-color: var(--bad); color: var(--bad); background: transparent; box-shadow: none; }
+.btn.danger.solid { background: var(--bad); color: var(--surface); }
+.btn.small + .btn.small { margin-left: 6px; }
+.tmost { margin: 6px 0 10px; padding-left: 20px; }
+.tmost li { margin-bottom: 4px; }
+
+@media (max-width: 520px) {
+  .card, .qcard { padding: 18px 16px 16px; }
+  .why { padding-left: 14px; }
+  .btn { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } .btn:active { transform: none; } }
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <p class="eyebrow">Grade 5 ICT · PowerPoint 365 + Introduction to AI</p>
+    <button class="btn ghost small" id="teacherBtn" type="button" hidden>Teacher board</button>
+  </div>
+
+  <section id="welcome">
+    <div class="card">
+      <svg class="banner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 40" width="290" height="40" shape-rendering="crispEdges" aria-hidden="true"><g fill="#F2B600" ><rect x="3" y="8" width="6" height="3"/><rect x="12" y="8" width="6" height="3"/><rect x="0" y="11" width="21" height="3"/><rect x="0" y="14" width="21" height="3"/><rect x="3" y="17" width="15" height="3"/><rect x="6" y="20" width="9" height="3"/><rect x="9" y="23" width="3" height="3"/></g><g fill="#2FA36B" ><rect x="30" y="6" width="12" height="4"/><rect x="54" y="6" width="12" height="4"/><rect x="78" y="6" width="12" height="4"/><rect x="98" y="6" width="16" height="4"/><rect x="130" y="6" width="4" height="4"/><rect x="154" y="6" width="4" height="4"/><rect x="170" y="6" width="4" height="4"/><rect x="182" y="6" width="12" height="4"/><rect x="202" y="6" width="4" height="4"/><rect x="218" y="6" width="4" height="4"/><rect x="226" y="6" width="4" height="4"/><rect x="26" y="10" width="4" height="4"/><rect x="42" y="10" width="4" height="4"/><rect x="50" y="10" width="4" height="4"/><rect x="66" y="10" width="4" height="4"/><rect x="74" y="10" width="4" height="4"/><rect x="90" y="10" width="4" height="4"/><rect x="98" y="10" width="4" height="4"/><rect x="114" y="10" width="4" height="4"/><rect x="130" y="10" width="4" height="4"/><rect x="154" y="10" width="4" height="4"/><rect x="170" y="10" width="4" height="4"/><rect x="178" y="10" width="4" height="4"/><rect x="194" y="10" width="4" height="4"/><rect x="202" y="10" width="4" height="4"/><rect x="214" y="10" width="4" height="4"/><rect x="226" y="10" width="4" height="4"/><rect x="26" y="14" width="4" height="4"/><rect x="50" y="14" width="4" height="4"/><rect x="66" y="14" width="4" height="4"/><rect x="74" y="14" width="4" height="4"/><rect x="90" y="14" width="4" height="4"/><rect x="98" y="14" width="4" height="4"/><rect x="114" y="14" width="4" height="4"/><rect x="130" y="14" width="4" height="4"/><rect x="154" y="14" width="4" height="4"/><rect x="170" y="14" width="4" height="4"/><rect x="178" y="14" width="4" height="4"/><rect x="202" y="14" width="4" height="4"/><rect x="210" y="14" width="4" height="4"/><rect x="226" y="14" width="4" height="4"/><rect x="26" y="18" width="4" height="4"/><rect x="34" y="18" width="12" height="4"/><rect x="50" y="18" width="4" height="4"/><rect x="66" y="18" width="4" height="4"/><rect x="74" y="18" width="4" height="4"/><rect x="90" y="18" width="4" height="4"/><rect x="98" y="18" width="4" height="4"/><rect x="114" y="18" width="4" height="4"/><rect x="130" y="18" width="4" height="4"/><rect x="154" y="18" width="4" height="4"/><rect x="170" y="18" width="4" height="4"/><rect x="178" y="18" width="4" height="4"/><rect x="202" y="18" width="8" height="4"/><rect x="226" y="18" width="4" height="4"/><rect x="26" y="22" width="4" height="4"/><rect x="42" y="22" width="4" height="4"/><rect x="50" y="22" width="4" height="4"/><rect x="66" y="22" width="4" height="4"/><rect x="74" y="22" width="4" height="4"/><rect x="90" y="22" width="4" height="4"/><rect x="98" y="22" width="4" height="4"/><rect x="114" y="22" width="4" height="4"/><rect x="130" y="22" width="4" height="4"/><rect x="154" y="22" width="4" height="4"/><rect x="170" y="22" width="4" height="4"/><rect x="178" y="22" width="4" height="4"/><rect x="202" y="22" width="4" height="4"/><rect x="210" y="22" width="4" height="4"/><rect x="226" y="22" width="4" height="4"/><rect x="26" y="26" width="4" height="4"/><rect x="42" y="26" width="4" height="4"/><rect x="50" y="26" width="4" height="4"/><rect x="66" y="26" width="4" height="4"/><rect x="74" y="26" width="4" height="4"/><rect x="90" y="26" width="4" height="4"/><rect x="98" y="26" width="4" height="4"/><rect x="114" y="26" width="4" height="4"/><rect x="130" y="26" width="4" height="4"/><rect x="154" y="26" width="4" height="4"/><rect x="170" y="26" width="4" height="4"/><rect x="178" y="26" width="4" height="4"/><rect x="194" y="26" width="4" height="4"/><rect x="202" y="26" width="4" height="4"/><rect x="214" y="26" width="4" height="4"/><rect x="30" y="30" width="12" height="4"/><rect x="54" y="30" width="12" height="4"/><rect x="78" y="30" width="12" height="4"/><rect x="98" y="30" width="16" height="4"/><rect x="130" y="30" width="20" height="4"/><rect x="158" y="30" width="12" height="4"/><rect x="182" y="30" width="12" height="4"/><rect x="202" y="30" width="4" height="4"/><rect x="218" y="30" width="4" height="4"/><rect x="226" y="30" width="4" height="4"/></g><g fill="#F2B600" ><rect x="272" y="8" width="6" height="3"/><rect x="281" y="8" width="6" height="3"/><rect x="269" y="11" width="21" height="3"/><rect x="269" y="14" width="21" height="3"/><rect x="272" y="17" width="15" height="3"/><rect x="275" y="20" width="9" height="3"/><rect x="278" y="23" width="3" height="3"/></g></svg><h1>assessment-1 revision</h1>
+      <p class="lead">There are <span id="nq">30</span> questions about PowerPoint and Artificial Intelligence. Find the clue words in each question, then choose the matching answer. Some questions are drag and drop. After each answer you will see why every option is right or wrong.</p>
+      <form id="startForm" novalidate>
+        <div class="field">
+          <label for="name">Your full name</label>
+          <input id="name" type="text" dir="auto" maxlength="40" autocomplete="off" placeholder="First name and family name" aria-describedby="nameErr">
+          <p class="err" id="nameErr" hidden>Please type your full name, first name and family name.</p>
+        </div>
+        <div class="field">
+          <label for="cls">Your class</label>
+          <select id="cls" aria-describedby="clsErr">
+            <option value="">Choose your class</option>
+            <option value="5B1">5B1</option>
+            <option value="5B2">5B2</option>
+            <option value="5B3">5B3</option>
+            <option value="5B4">5B4</option>
+          </select>
+          <p class="err" id="clsErr" hidden>Please choose your class.</p>
+        </div>
+        <button class="btn" type="submit">Start revising</button>
+        <p class="note">Your name and score are sent to your teacher when you finish.</p>
+      </form>
+      <div class="how">
+        <div><b>Find the clue</b>Look for the words that match the definition you learned.</div>
+        <div><b>Learn from every answer</b>Right or wrong, you see why each option fits or does not.</div>
+        <div><b>Keep your streak</b>Answers in a row earn bonus points.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="play" hidden>
+    <div class="hud">
+      <p class="slideno" id="slideNo">Question 1</p>
+      <p class="stats"><span><span>Points</span><b id="pts">0</b></span><span><span>Streak</span><b id="strk">0</b></span></p>
+    </div>
+    <div class="sorter" id="sorter" aria-hidden="true"></div>
+    <div class="card qcard">
+      <p class="qtext" id="qtext" dir="auto"></p>
+      <div class="fb" id="fb" role="status" aria-live="polite" hidden></div>
+      <div class="opts" id="opts"></div>
+      <div class="drag" id="drag" hidden></div>
+      <div class="nextbar" id="nextbar" hidden><button class="btn" id="next" type="button">Next question</button></div>
+    </div>
+  </section>
+
+  <section id="done" hidden>
+    <div class="card">
+      <div class="scorebox">
+        <p class="eyebrow" id="doneName"></p>
+        <p class="big"><span id="bigScore">0</span><small> / <span id="bigTotal">0</span></small></p>
+        <div class="bar"><i id="barFill"></i></div>
+        <p class="verdict" id="verdict"></p>
+        <p class="kpis"><span><span>Points</span><b id="kPts">0</b></span><span><span>Best streak</span><b id="kBest">0</b></span><span><span>Time</span><b id="kTime">0:00</b></span></p>
+      </div>
+      <p class="savestat" id="saveStat" role="status"></p>
+      <div id="manual" class="send" hidden>
+        <h2>Last step: send your score to your teacher</h2>
+        <p id="formHint">Tap the button below. Your name, class and score are filled in for you. Press Submit in the form.</p>
+        <dl class="vals">
+          <div><dt>Name</dt><dd id="vName" dir="auto"></dd></div>
+          <div><dt>Class</dt><dd id="vCls"></dd></div>
+          <div><dt>Score</dt><dd><span id="vScore"></span> <small id="vOut"></small></dd></div>
+        </dl>
+        <a class="btn" id="formLink" href="#" target="_blank" rel="noopener">Open the results form</a>
+      </div>
+      <textarea id="summary" readonly hidden dir="auto" aria-label="Your result as text"></textarea>
+      <div class="actions">
+        <button class="btn" id="again" type="button">Play again</button>
+        <button class="btn ghost" id="copyRes" type="button">Copy my result</button>
+      </div>
+      <div class="review" id="review" hidden>
+        <h2>Questions to revise</h2>
+        <div id="missList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="teacher" hidden>
+    <div class="card">
+      <h2>Teacher board</h2>
+      <p class="note" id="tCount"></p>
+      <div id="tGroups"></div>
+      <h3>Most missed questions</h3>
+      <ol class="tmost" id="tMost"></ol>
+      <textarea id="tText" readonly dir="auto" aria-label="Class results as text"></textarea>
+      <div class="actions">
+        <button class="btn" id="tCopy" type="button">Copy class list</button>
+        <button class="btn ghost" id="tBack" type="button">Back to the game</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const Q = [{"q":"What are the steps to add a video to a slide?","c":"add a video","o":["Click on Insert tab, in the Media group, choose Video or Audio option from the drop-down list.","Click on Design tab, in the Media group, choose Video or Audio option from the drop-down list.","Click on Insert tab, in the Paragraph group, choose Video or Audio option from the drop-down list.","Click on Home tab, in the Clipboard group, choose Video or Audio option from the drop-down list."],"a":0,"w":["Video and audio files are added from the Media group on the Insert tab. You choose the Video or Audio option from the drop-down list.","The Design tab is for themes and backgrounds. It has no Media group.","The Insert tab is right, but the Paragraph group is for text layout. Video and audio are in the Media group.","The Clipboard group only has Cut, Copy and Paste. It cannot add a video."]},{"q":"What are the steps to add a picture to a slide?","c":"add a picture","o":["Click on Insert tab, click on Pictures, then choose This Device, Stock Images or Online Pictures.","Click on Design tab, click on Pictures, then choose This Device, Stock Images or Online Pictures.","Click on Insert tab, click on SmartArt, then choose This Device, Stock Images or Online Pictures.","Click on Slide Show tab, click on From Beginning, then choose This Device, Stock Images or Online Pictures."],"a":0,"w":["The steps are: 1) Click on Insert tab. 2) Click on Pictures. 3) Choose This Device, Stock Images or Online Pictures.","Pictures is not on the Design tab. The Design tab is for themes and backgrounds.","SmartArt adds graphics grouped under different categories. Use the Pictures button to insert a picture.","The Slide Show tab starts the slide show. It does not insert pictures."]},{"q":"How many types of presentation views are there?","c":"types of presentation views","o":["Four","Two","Three","Five"],"a":0,"w":["There are four types of presentation views. The statement \"there are only three types of presentation views\" is false. The four types are Slide Sorter, Normal, Slide Show and Reading View.","Two is too few. There are four types of presentation views. The four types are Slide Sorter, Normal, Slide Show and Reading View.","Three is the common mistake. There are not only three types. There are four. The four types are Slide Sorter, Normal, Slide Show and Reading View.","Five is too many. There are four types of presentation views. The four types are Slide Sorter, Normal, Slide Show and Reading View."]},{"q":"Which is a special command that allows the user to copy the text format and not the text, from one part of the text to another?","c":"copy the text format and not the text","o":["Format painter","Format","Font style","Duplicating"],"a":0,"w":["The Format painter is a special command that allows the user to copy the text format and not the text, from one part of the text to another.","Format means to arrange the text according to a chosen pattern. It is not the special command that copies a format.","Font style refers to the formatting of text, such as bold, italic, or underline.","Duplicating means copying the selected text and pasting it in another location. It copies the text, not just the format."]},{"q":"What does the Format painter do?","c":"Format painter","o":["It copies the text format and not the text, from one part of the text to another.","It copies the text and pastes it in another location.","It changes or sets the colour of a slide's background.","It adds graphics grouped under different categories."],"a":0,"w":["This is what the Format painter does: it copies the text format and not the text.","That describes Duplicating. The Format painter copies the format, not the text.","That is what the Background Style command does.","That is what SmartArt does."]},{"q":"Which term means to 'cut' the selected text from one location of a slide and 'paste' it in another location in the same slide or another slide?","c":"'cut' the selected text","o":["Moving","Duplicating","Formatting","Modifying"],"a":0,"w":["Moving means to cut the selected text from one location and paste it in another location.","Duplicating means copying the text and pasting it in another location, so the original stays where it was.","Formatting means changing the layout and appearance of the document, such as font style, size and themes.","Modifying means making changes to existing content, like editing text in a document."]},{"q":"Which term means 'copying' the selected text from one location and 'pasting' it in other location?","c":"'copying' the selected text","o":["Duplicating","Moving","Editing","Formatting"],"a":0,"w":["Duplicating means copying the selected text from one location and pasting it in another location.","Moving means to cut the selected text and paste it in another location, so the text leaves the first place.","Editing refers to making changes in a document by modifying, arranging and tracking.","Formatting means changing the layout and appearance of the document."]},{"q":"Which term is the visual effect that occurs when you move from one slide to the next during a presentation?","c":"visual effect","o":["Slide transition","Slide show","Theme","Background style"],"a":0,"w":["A slide transition is the visual effect that occurs when you move from one slide to the next during a presentation.","A slide show is the presentation playing on the screen. It is not the effect between two slides.","A theme is a template with a specific design that can be applied to a slide or to the entire presentation.","Background Style helps you change or set the colour of a slide's background."]},{"q":"Which term refers to making changes in a document by modifying, arranging and tracking, etc.?","c":"modifying, arranging and tracking","o":["Editing","Formatting","Duplicating","Moving"],"a":0,"w":["Editing refers to making changes in a document by modifying, arranging and tracking, etc.","Formatting means to change the layout and the appearance of the document through enhancing the font style, size, themes, etc.","Duplicating means copying the selected text and pasting it in another location.","Moving means to cut the selected text and paste it in another location."]},{"q":"Which is a template with a specific design that can be applied to a slide or to the entire presentation?","c":"template with a specific design","o":["Theme","Layout","Background style","SmartArt"],"a":0,"w":["A theme is a template with a specific design that can be applied to a slide or to the entire presentation. It contains pre-defined colour combinations.","Layout is the arrangement of text, images and other elements on a page or slide.","Background Style helps you change or set the colour of a slide's background.","SmartArt allows the user to add graphics grouped under different categories."]},{"q":"Which feature allows the user to add graphics to the presentation grouped under different categories?","c":"grouped under different categories","o":["SmartArt","ClipArt","Theme","Slide transition"],"a":0,"w":["SmartArt allows the user to add graphics to the presentation grouped under different categories.","ClipArt is files of general-purpose graphics consisting of animations and cartoons.","A theme is a template with a specific design for a slide or the entire presentation.","A slide transition is the visual effect when you move from one slide to the next."]},{"q":"Artificial intelligence or AI is the science of making machines that can do things that normally require ______.","c":"normally require","o":["human intelligence","extra batteries","a printed textbook","a paper map"],"a":0,"w":["AI is the science of making machines that can do things that normally require human intelligence.","AI is about intelligence, not about batteries.","AI does not learn from a textbook. It learns from data given to it.","AI can make maps smarter, but the definition is about things that normally need human intelligence."]},{"q":"The process of the AI looking at the data to learn is called ______.","c":"looking at the data to learn","o":["Training","Prompting","Hallucinating","Bias"],"a":0,"w":["The process of the AI looking at the data to learn is called Training.","Prompting is typing a prompt to tell an AI what to create.","Hallucinating is when AI makes a mistake but sounds very confident about it.","Bias is when an AI is unfair because the data it learned from was missing important information."]},{"q":"Sometimes AI can \"hallucinate,\" which means ______.","c":"hallucinate","o":["it makes a mistake but sounds very confident about it","it learns from thousands of pictures","it creates a poem, a song or a digital painting","it is unfair because data was missing"],"a":0,"w":["When AI hallucinates, it makes a mistake but sounds very confident about it. This is why we always check the facts.","That describes how AI learns from data during training.","That describes Generative AI.","That describes Bias."]},{"q":"Which one is a disadvantage of AI?","c":"disadvantage","o":["Inaccuracy: It can give incorrect or false information.","Efficiency: It saves time by completing tasks quickly.","Knowledge: It helps people learn and find information easily.","Accuracy: It reduces human errors in many tasks."],"a":0,"w":["Inaccuracy is a disadvantage. AI can give incorrect or false information, so always check the facts.","Efficiency is an advantage of AI.","Knowledge is an advantage of AI.","Accuracy is an advantage of AI."]},{"type":"drag","q":"Drag each keyboard shortcut to the command it belongs to.","tip":"Look at the green and red boxes to see which pairs were right.","items":[{"t":"Add a new slide to the presentation","a":"Ctrl + M","l":"Add a new slide","w":"Ctrl + M is the keyboard shortcut used to add a new slide to the presentation. N is already taken (Ctrl + N is for a new presentation), so we cannot use N for a new slide.","c":["new slide"]},{"t":"Create a new presentation","a":"Ctrl + N","l":"Create a new presentation","w":"Ctrl + N is the keyboard shortcut used to create a new presentation. N is for \"New\". Because N is already taken, a new slide uses Ctrl + M instead.","c":["new presentation"]},{"t":"Bold","a":"Ctrl + B","l":"Bold","w":"Ctrl + B is the keyboard shortcut for Bold.","c":["Bold"]},{"t":"Select All","a":"Ctrl + A","l":"Select All","w":"Ctrl + A is the keyboard shortcut for Select All.","c":["Select All"]},{"t":"Paste","a":"Ctrl + V","l":"Paste","c":["Paste"],"w":"Ctrl + V is the keyboard shortcut for Paste. Ctrl + P is already taken, it is for Print, so Paste uses V."},{"t":"Cut","a":"Ctrl + X","l":"Cut","c":["Cut"],"w":"Ctrl + X is the keyboard shortcut for Cut. Ctrl + C is already taken, it is for Copy, so Cut uses X."},{"t":"Start a slide show from the first slide","a":"F5","l":"Slide show from the first slide","w":"F5 starts the slide show from the first slide (the same as the From Beginning button).","c":["first slide"]},{"t":"Start a slide show from the current slide","a":"Shift + F5","l":"Slide show from the current slide","w":"Shift + F5 starts the slide show from the current slide (the same as the From Current Slide button).","c":["current slide"]}]},{"type":"drag","q":"Drag each term to its meaning.","tip":"Look at the green and red boxes to see which pairs were right.","items":[{"t":"Refers to the design or the shape of the text as it appears on the screen.","a":"Font","l":"Font: the design or shape of the text","w":"Font refers to the design or the shape of the text as it appears on the screen.","c":["design or the shape"]},{"t":"Refers to how large or small the text is, as it appears on the screen.","a":"Font size","l":"Font size: how large or small the text is","w":"Font size refers to how large or small the text is, as it appears on the screen.","c":["how large or small"]},{"t":"The blank spaces near the edges of the page.","a":"Margins","l":"Margins: the blank spaces near the edges of the page","w":"Margins are the blank spaces near the edges of the page.","c":["blank spaces"]},{"t":"The text layout within a paragraph with respect to document margins.","a":"Alignment","l":"Alignment: the text layout within a paragraph","w":"Text alignment refers to the text layout within a paragraph with respect to document margins. There are four types of alignments.","c":["text layout within a paragraph"]}]},{"type":"drag","q":"Drag each AI keyword to its meaning.","tip":"Look at the green and red boxes to see which pairs were right.","items":[{"t":"Raw facts and figures (such as pictures, words, or numbers) that a computer uses to process and create information. We also give data to AI so it can learn.","a":"Data","l":"Data: raw facts and figures","w":"Data is raw facts and figures (such as pictures, words, or numbers) that a computer uses to process and create information. We also give data to AI so it can learn.","c":["Raw facts","to AI so it can learn"]},{"t":"The specific question or instruction you give to an AI tool. It is the bridge between your imagination and the AI's \"digital brain.\"","a":"Prompt","l":"Prompt: the specific question or instruction you give to an AI tool","w":"A prompt is the specific question or instruction you give to an AI tool. It is the bridge between your imagination and the AI's \"digital brain.\"","c":["specific question or instruction"]},{"t":"When an AI is unfair because the data it learned from was missing important information.","a":"Bias","l":"Bias: an AI is unfair because data was missing","w":"Bias is when an AI is unfair because the data it learned from was missing important information.","c":["unfair because the data it learned from"]},{"t":"The \"digital brain\" that the computer builds from training data.","a":"Model","l":"Model: the \"digital brain\" built from data","w":"The \"brain\" the computer builds from data is called a Model. It is the AI's \"digital brain\", and the more data it gets, the better it learns.","c":["digital brain","builds from training data"]},{"t":"AI that is specialized in creating content like a poem, a song, or a digital painting.","a":"Generative AI","l":"Generative AI: creates content like a poem, a song or a painting","w":"Generative AI is AI that is specialized in creating content like a poem, a song, or a digital painting.","c":["specialized in creating"]}]},{"type":"drag","q":"Drag each AI tool to what it does.","tip":"Look at the green and red boxes to see which pairs were right.","items":[{"t":"Analyzes traffic data to find the fastest way home.","a":"Google Maps","l":"Google Maps: traffic and the fastest way home","c":["Analyzes traffic"],"w":"Google Maps is a Smart Map. Smart Maps use AI to predict traffic and find the fastest way home."},{"t":"Recognizes your unique facial features to unlock a phone.","a":"Face ID","l":"Face ID: recognizes your face to unlock a phone","c":["Recognizes your unique facial features"],"w":"Face ID uses AI to recognize your face so it can unlock safely."},{"t":"Recognizes your voice and talks back to you.","a":"Siri","l":"Siri: recognizes your voice and talks back","c":["Recognizes your voice"],"w":"Siri is a Voice Assistant. It uses AI to understand your voice and talk back to you."},{"t":"Uses patterns to suggest a new video you will love.","a":"YouTube","l":"YouTube: suggests a new video you will love","c":["patterns to suggest a new video"],"w":"YouTube uses AI to suggest shows and videos based on what you have liked before. It finds patterns in what you watch."},{"t":"Acts as a Generative AI to write stories or poems.","a":"ChatGPT","l":"ChatGPT: acts as a Generative AI to write stories or poems","c":["a Generative AI"],"w":"ChatGPT acts as a Generative AI. Tools like ChatGPT and Microsoft Copilot do not just find information, they create it, like a story or a poem."}]},{"type":"drag","tf":true,"q":"True or False. Drag a ✔ or a ✘ onto each statement.","items":[{"t":"ClipArt is files of general-purpose graphics consisting of animations and cartoons.","v":"T","c":["general-purpose graphics"],"w":"True. ClipArt is files of general-purpose graphics consisting of animations and cartoons.","l":"ClipArt is files of general-purpose graphics consisting of animations and cartoons: True"},{"t":"Ctrl + X is the keyboard shortcut for Copy.","v":"F","c":["Ctrl + X"],"w":"False. Ctrl + C is the keyboard shortcut for Copy. Ctrl + X is for Cut.","l":"Ctrl + X is the keyboard shortcut for Copy: False"},{"t":"We do not need to check the facts after the AI gives an answer.","v":"F","c":["do not need to check"],"w":"False. We actually should check. Always double-check AI answers with a book or a trusted website, because the AI might make mistakes or have a bias.","l":"We do not need to check the facts after the AI gives an answer: False"},{"t":"The four types of text alignment are Left, Right, Centre and Justified.","v":"T","c":["Left, Right, Centre and Justified"],"w":"True. There are four types of alignments: Left Alignment, Right Alignment, Centre Alignment and Justified alignment.","l":"The four types of text alignment are Left, Right, Centre and Justified: True"},{"t":"Top Alignment is one of the types of text alignment.","v":"F","c":["Top Alignment"],"w":"False. Top Alignment is not a type of text alignment. The four types are Left, Right, Centre and Justified.","l":"Top Alignment is one of the types of text alignment: False"}]}];
+const $ = id => document.getElementById(id);
+const el = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; return e; };
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+const dbP = use('db');
+const userP = use('user');
+let dbReady = null;
+dbP.then(d => { dbReady = !!d; });
+const LETTERS = 'ABCD';
+const PRAISE = ['Correct!', 'Nice clue hunting!', 'Spot on!', 'You found it!', 'Great work!'];
+
+const S = { name: '', cls: '', mode: 'full', order: [], i: 0, correct: 0, points: 0, streak: 0, best: 0, missed: [], marks: [], startedAt: 0, docId: '', locked: false, opts: [] };
+let startWrite = Promise.resolve(false);
+
+function show(id) {
+  for (const s of ['welcome', 'play', 'done', 'teacher']) $(s).hidden = s !== id;
+  window.scrollTo(0, 0);
+}
+
+/* ---------- saving ---------- */
+const newId = () => 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const fmtTime = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+function payload(status) {
+  const secs = Math.round((Date.now() - S.startedAt) / 1000);
+  const d = {
+    name: S.name, cls: S.cls, mode: S.mode, total: S.order.length, correct: S.correct, points: S.points,
+    bestStreak: S.best, missed: S.missed.map(q => q + 1), status, startedAt: new Date(S.startedAt).toISOString(), secs
+  };
+  if (status === 'done') d.finishedAt = new Date().toISOString();
+  return d;
+}
+async function writeDoc(status) {
+  const id = S.docId, data = payload(status);
+  const db = await dbP;
+  if (!db) return false;
+  try { await db.doc('results/' + id).set(data); return true; } catch (e) { return false; }
+}
+
+/* ---------- game ---------- */
+function startGame(e) {
+  e.preventDefault();
+  const name = $('name').value.trim().replace(/\s+/g, ' ');
+  const cls = $('cls').value;
+  const okName = name.split(' ').filter(w => w.length >= 2).length >= 2;
+  $('nameErr').hidden = okName;
+  $('clsErr').hidden = !!cls;
+  if (!okName) { $('name').focus(); return; }
+  if (!cls) { $('cls').focus(); return; }
+  const mode = 'full';
+  let order = shuffle([...Q.keys()]);
+  Object.assign(S, { name, cls, mode, order, i: 0, correct: 0, points: 0, streak: 0, best: 0, missed: [], marks: [], startedAt: Date.now(), docId: newId(), locked: false });
+  startWrite = writeDoc('started');
+  const sorter = $('sorter'); sorter.replaceChildren();
+  order.forEach(() => sorter.append(el('span', 'sq')));
+  show('play');
+  renderQ();
+}
+
+function setQuestion(q) {
+  const box = $('qtext'); box.replaceChildren();
+  const k = q.c ? q.q.indexOf(q.c) : -1;
+  if (k < 0 || !S.locked) { box.textContent = q.q; return; }
+  const m = el('mark'); m.textContent = q.c;
+  box.append(q.q.slice(0, k), m, q.q.slice(k + q.c.length));
+}
+
+function hud() {
+  $('slideNo').textContent = 'Question ' + (S.i + 1) + ' of ' + S.order.length;
+  $('pts').textContent = S.points;
+  $('strk').textContent = S.streak;
+  [...$('sorter').children].forEach((sq, n) => {
+    sq.className = 'sq' + (S.marks[n] ? ' ' + S.marks[n] : n === S.i ? ' now' : '');
+  });
+}
+
+function renderQ() {
+  const q = Q[S.order[S.i]];
+  S.locked = false;
+  if (q.type === 'drag') { renderDrag(q); hud(); return; }
+  $('drag').hidden = true; $('opts').hidden = false; S.dg = null;
+  S.opts = shuffle([0, 1, 2, 3]);
+  setQuestion(q);
+  $('fb').hidden = true;
+  $('nextbar').hidden = true;
+  const list = $('opts'); list.replaceChildren();
+  S.opts.forEach((k, pos) => {
+    const wrap = el('div', 'optwrap'); wrap.dataset.k = k;
+    const b = el('button', 'opt'); b.type = 'button';
+    const chip = el('span', 'chip'); chip.textContent = LETTERS[pos];
+    const t = el('span'); t.textContent = q.o[k]; t.dir = 'auto';
+    b.append(chip, t);
+    b.addEventListener('click', () => pick(k));
+    const why = el('p', 'why'); why.hidden = true;
+    wrap.append(b, why);
+    list.append(wrap);
+  });
+  hud();
+}
+
+function pick(k) {
+  if (S.locked) return;
+  S.locked = true;
+  const qi = S.order[S.i], q = Q[qi];
+  const right = k === q.a;
+  let gained = 0;
+  if (right) {
+    gained = 10 + Math.min(S.streak, 5) * 2;
+    S.correct++; S.points += gained; S.streak++; S.best = Math.max(S.best, S.streak);
+  } else { S.streak = 0; S.missed.push(qi); }
+  S.marks[S.i] = right ? 'right' : 'wrong';
+
+  [...$('opts').children].forEach(wrap => {
+    const o = +wrap.dataset.k;
+    wrap.classList.add('locked');
+    wrap.querySelector('.opt').setAttribute('aria-disabled', 'true');
+    const why = wrap.querySelector('.why');
+    const tag = el('span', 'tag');
+    if (o === q.a) { wrap.classList.add('right'); tag.textContent = 'Correct answer.'; }
+    else if (o === k) { wrap.classList.add('picked-wrong'); tag.textContent = 'You picked this. Why it is wrong:'; }
+    else { tag.textContent = 'Why not:'; }
+    why.replaceChildren(tag, q.w[o]);
+    why.hidden = false;
+  });
+
+  setQuestion(q);
+  const pos = S.opts.indexOf(q.a);
+  const fb = $('fb'); fb.className = 'fb ' + (right ? 'right' : 'wrong'); fb.replaceChildren();
+  const h = el('h3'); h.textContent = right ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : 'Not quite.';
+  const a = el('p', 'ans'); a.textContent = 'Correct answer: ' + LETTERS[pos] + '. ' + q.o[q.a];
+  fb.append(h, a);
+  if (right) { const p = el('p'); p.textContent = '+' + gained + ' points' + (S.streak > 1 ? ' · streak of ' + S.streak : ''); fb.append(p); }
+  const clue = el('p');
+  clue.textContent = q.c ? 'The clue is highlighted in the question above.' : q.tip;
+  fb.append(clue);
+  fb.hidden = false;
+
+  const last = S.i + 1 >= S.order.length;
+  $('next').textContent = last ? 'See my results' : 'Next question';
+  $('nextbar').hidden = false;
+  hud();
+  fb.scrollIntoView({ block: 'nearest' });
+  $('next').focus({ preventScroll: true });
+}
+
+function next() {
+  if (!S.locked) return;
+  if (S.i + 1 >= S.order.length) { finish(); return; }
+  S.i++; renderQ(); window.scrollTo(0, 0);
+}
+
+
+/* ---------- drag and drop questions ---------- */
+const tokLabel = (D, t) => D.tf ? (D.q.labels ? D.q.labels[t === 'T' ? 0 : 1] : (t === 'T' ? '✔ True' : '✘ False')) : D.q.items[t].a;
+const wantTok = (D, r) => D.tf ? D.q.items[r].v : r;
+function renderDrag(q) {
+  S.opts = [];
+  setQuestion(q);
+  $('fb').hidden = true; $('nextbar').hidden = true;
+  $('opts').hidden = true; $('opts').replaceChildren();
+  const tf = !!q.tf;
+  const D = S.dg = { rows: shuffle(q.items.map((_, i) => i)), chips: tf ? ['T', 'F'] : shuffle(q.items.map((_, i) => i)), place: {}, sel: null, q, tf };
+  const box = $('drag'); box.hidden = false; box.replaceChildren();
+  const help = el('p', 'dhelp');
+  help.textContent = tf
+    ? 'Drag a ' + tokLabel(D, 'T') + ' or ' + tokLabel(D, 'F') + ' box onto each statement. You can also tap a box, then tap the statement.'
+    : 'Drag each yellow box to its place. You can also tap a yellow box, then tap the place.';
+  const rows = el('div', 'drows'); rows.id = 'dRows';
+  D.rows.forEach(r => {
+    const row = el('div', 'drow'); row.dataset.r = r;
+    const p = el('p', 'dprompt'); p.textContent = q.items[r].t; p.dir = 'auto';
+    const slot = el('div', 'dslot'); slot.dataset.r = r; slot.tabIndex = 0; slot.setAttribute('role', 'button');
+    slot.addEventListener('click', e => { if (!e.target.closest('.dchip')) slotTap(r); });
+    slot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); slotTap(r); } });
+    const why = el('p', 'dwhy'); why.hidden = true;
+    row.append(p, slot, why); rows.append(row);
+  });
+  const tray = el('div', 'dtray'); tray.id = 'dTray';
+  const chk = el('button', 'btn'); chk.type = 'button'; chk.id = 'dCheck'; chk.textContent = 'Check my answers'; chk.disabled = true;
+  chk.addEventListener('click', checkDrag);
+  box.append(help, rows, tray, chk);
+  drawDrag();
+}
+function makeChip(id) {
+  const D = S.dg, b = el('button', 'dchip' + (D.tf ? (D.q.labels ? (id === 'T' ? ' mk1' : ' mk2') : (id === 'T' ? ' tick' : ' cross')) : '')); b.type = 'button'; b._id = id; b.textContent = tokLabel(D, id);
+  if (D.sel === id) b.classList.add('sel');
+  b.addEventListener('pointerdown', e => startChipDrag(e, b));
+  b.addEventListener('click', () => {
+    if (S.locked || S.justDragged) return;
+    const slot = b.closest('.dslot');
+    if (slot) { unplace(id, +slot.dataset.r); return; }
+    D.sel = D.sel === id ? null : id; drawDrag();
+  });
+  return b;
+}
+function drawDrag() {
+  const D = S.dg; if (!D) return;
+  const placed = new Set(Object.values(D.place));
+  document.querySelectorAll('#dRows .dslot').forEach(slot => {
+    const r = +slot.dataset.r; slot.replaceChildren();
+    slot.classList.toggle('target', D.sel != null && !S.locked);
+    if (D.place[r] != null) slot.append(makeChip(D.place[r]));
+    else { const ph = el('span', 'ph'); ph.textContent = D.tf && !D.q.labels ? 'Drop ✔ or ✘' : 'Drop here'; slot.append(ph); }
+    slot.setAttribute('aria-label', 'Place for: ' + D.q.items[r].t + (D.place[r] != null ? '. Now holds ' + tokLabel(D, D.place[r]) : '. Empty'));
+  });
+  const tray = $('dTray'); tray.replaceChildren();
+  D.chips.filter(c => D.tf || !placed.has(c)).forEach(c => tray.append(makeChip(c)));
+  const chk = $('dCheck'); if (chk) chk.disabled = Object.keys(D.place).length < D.q.items.length;
+}
+function dropOut(D, id) { Object.keys(D.place).forEach(k => { if (D.place[k] === id) delete D.place[k]; }); }
+function placeChip(id, r, from) {
+  const D = S.dg; if (!D || S.locked) return;
+  if (D.tf) { if (from != null) delete D.place[from]; }
+  else dropOut(D, id);
+  D.place[r] = id; D.sel = null; drawDrag();
+}
+function unplace(id, from) {
+  const D = S.dg; if (!D || S.locked) return;
+  if (D.tf) { if (from != null) delete D.place[from]; }
+  else dropOut(D, id);
+  D.sel = null; drawDrag();
+}
+function slotTap(r) {
+  const D = S.dg; if (!D || S.locked) return;
+  if (D.sel != null) placeChip(D.sel, r, null);
+  else if (D.place[r] != null) unplace(D.place[r], r);
+}
+function slotAt(ev) { const t = document.elementFromPoint(ev.clientX, ev.clientY); return t && t.closest ? t.closest('.dslot') : null; }
+function startChipDrag(e, chip) {
+  if (S.locked || (e.button != null && e.button > 0)) return;
+  const sx = e.clientX, sy = e.clientY, id = chip._id;
+  const fs = chip.closest('.dslot'), from = fs ? +fs.dataset.r : null;
+  let ghost = null, moved = false;
+  const clearOver = () => document.querySelectorAll('.dslot.over').forEach(x => x.classList.remove('over'));
+  const move = ev => {
+    if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return;
+    if (!moved) { moved = true; ghost = chip.cloneNode(true); ghost.classList.add('ghost'); document.body.append(ghost); chip.classList.add('lifting'); }
+    ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px';
+    clearOver(); const t = slotAt(ev); if (t) t.classList.add('over');
+    ev.preventDefault();
+  };
+  const up = ev => {
+    window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up);
+    if (!moved) return;
+    ghost.remove(); clearOver();
+    S.justDragged = true; setTimeout(() => { S.justDragged = false; }, 0);
+    const t = ev.type === 'pointerup' ? slotAt(ev) : null;
+    if (t) placeChip(id, +t.dataset.r, from);
+    else {
+      const el2 = document.elementFromPoint(ev.clientX, ev.clientY);
+      if (ev.type === 'pointerup' && el2 && el2.closest('#dTray') && from != null) unplace(id, from); else drawDrag();
+    }
+  };
+  window.addEventListener('pointermove', move, { passive: false });
+  window.addEventListener('pointerup', up);
+  window.addEventListener('pointercancel', up);
+}
+function markedFrag(text, clues) {
+  const spans = [];
+  (clues || []).forEach(c => { const k = text.indexOf(c); if (k >= 0) spans.push([k, k + c.length]); });
+  spans.sort((x, y) => x[0] - y[0]);
+  const frag = document.createDocumentFragment(); let pos = 0;
+  spans.forEach(([a, b]) => { if (a < pos) return; frag.append(text.slice(pos, a)); const m = el('mark'); m.textContent = text.slice(a, b); frag.append(m); pos = b; });
+  frag.append(text.slice(pos)); return frag;
+}
+function checkDrag() {
+  const D = S.dg; if (!D || S.locked) return;
+  const q = D.q;
+  if (Object.keys(D.place).length < q.items.length) return;
+  S.locked = true;
+  const qi = S.order[S.i];
+  const right = q.items.every((_, r) => D.place[r] === wantTok(D, r));
+  let gained = 0;
+  if (right) { gained = 10 + Math.min(S.streak, 5) * 2; S.correct++; S.points += gained; S.streak++; S.best = Math.max(S.best, S.streak); }
+  else { S.streak = 0; S.missed.push(qi); }
+  S.marks[S.i] = right ? 'right' : 'wrong';
+  D.sel = null; drawDrag();
+  document.querySelectorAll('#dRows .drow').forEach(row => {
+    const r = +row.dataset.r, ok = D.place[r] === wantTok(D, r);
+    row.classList.add(ok ? 'right' : 'wrong');
+    row.querySelector('.dprompt').replaceChildren(markedFrag(q.items[r].t, q.items[r].c));
+    const why = row.querySelector('.dwhy'), tag = el('span', 'tag');
+    if (ok) { tag.textContent = 'Correct.'; why.replaceChildren(tag, q.items[r].w); }
+    else { tag.textContent = 'Not this one. You put "' + tokLabel(D, D.place[r]) + '" here. The answer is "' + tokLabel(D, wantTok(D, r)) + '".'; why.replaceChildren(tag, ' ' + q.items[r].w); }
+    why.hidden = false;
+  });
+  document.querySelectorAll('#dRows .dslot').forEach(s => { s.classList.remove('target'); s.removeAttribute('role'); s.tabIndex = -1; });
+  $('dCheck').hidden = true; $('dTray').hidden = true; document.querySelector('#drag .dhelp').hidden = true;
+  const fb = $('fb'); fb.className = 'fb ' + (right ? 'right' : 'wrong'); fb.replaceChildren();
+  const h = el('h3'); h.textContent = right ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : 'Not quite.';
+  const a = el('p', 'ans');
+  a.textContent = D.tf
+    ? (right ? 'Every statement is marked correctly.' : 'Some statements are marked wrong. Read the note under each one to see the right answer.')
+    : (right ? 'Every pair is matched correctly.' : 'Some pairs are wrong. Read the note under each pair to see the right match.');
+  fb.append(h, a);
+  if (right) { const p = el('p'); p.textContent = '+' + gained + ' points' + (S.streak > 1 ? ' · streak of ' + S.streak : ''); fb.append(p); }
+  const cl = el('p'); cl.textContent = 'The clue words are highlighted in each box.'; fb.append(cl);
+  fb.hidden = false;
+  const last = S.i + 1 >= S.order.length;
+  $('next').textContent = last ? 'See my results' : 'Next question';
+  $('nextbar').hidden = false;
+  hud();
+  fb.scrollIntoView({ block: 'nearest' });
+  $('next').focus({ preventScroll: true });
+}
+
+function verdictFor(p) {
+  if (p >= 90) return 'Revision star! Brilliant work.';
+  if (p >= 75) return 'Great work! Almost perfect.';
+  if (p >= 50) return 'Good start. Revise the questions below and try again.';
+  return 'Keep practising. Read each clue again and replay.';
+}
+
+function summaryText() {
+  const d = new Date().toLocaleDateString();
+  return 'assessment-1 revision | ' + S.name + ' (' + S.cls + ')' + ' | ' + S.correct + '/' + S.order.length + ' | ' + S.points + ' points | ' + d;
+}
+
+/* Microsoft Form for assessment-1 revision. Paste the pre-filled link parts here once the form exists. */
+const FORM_BASE = 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=s58mGph4PEOYTBhOzzPm2YYvLCPl545On_Hfv_hZ-KhUQVU2MVpEQ0NVTkZSTEZXSEdZTklZMDgwUi4u';
+const FORM_Q = { name: 'rb6ae0f03ab1841f3b6fdb988798c1704', cls: 'rf1f18a981f4046b0937c91bfb4066c8b', score: 'r90415ac2c5574724b37f233b6083e3af' };
+const HAS_FORM = !!FORM_BASE;
+const HAS_FILL = !!(FORM_Q.name && FORM_Q.cls && FORM_Q.score);
+function formUrl() {
+  if (!HAS_FORM) return '';
+  if (!HAS_FILL) return FORM_BASE;
+  return FORM_BASE + '&' + FORM_Q.name + '=' + encodeURIComponent(S.name)
+    + '&' + FORM_Q.cls + '=' + encodeURIComponent('"' + S.cls + '"')
+    + '&' + FORM_Q.score + '=' + S.correct;
+}
+
+async function finish() {
+  let opened = null;
+  if (HAS_FORM && dbReady !== true) { try { opened = window.open(formUrl(), '_blank'); if (opened) opened.opener = null; } catch (e) { opened = null; } }
+  $('formHint').textContent = !HAS_FORM
+    ? 'Show this result to your teacher, or tap Copy my result and send it.'
+    : !HAS_FILL
+    ? (opened ? 'The form opened in a new tab. Type the name, class and score shown below, then press Submit. If you do not see it, tap the button below.' : 'Tap the button below to open the form. Type the name, class and score shown below, then press Submit.')
+    : opened
+    ? 'The form opened in a new tab with your name, class and score filled in. Press Submit there. If you do not see it, tap the button below.'
+    : 'Tap the button below. Your name, class and score are filled in for you. Press Submit in the form.';
+  $('formLink').hidden = !HAS_FORM;
+  const total = S.order.length, pct = Math.round(S.correct / total * 100);
+  const secs = Math.round((Date.now() - S.startedAt) / 1000);
+  $('doneName').textContent = S.name + ' · ' + S.cls;
+  $('bigScore').textContent = S.correct; $('bigTotal').textContent = total;
+  $('verdict').textContent = verdictFor(pct);
+  $('kPts').textContent = S.points; $('kBest').textContent = S.best; $('kTime').textContent = fmtTime(secs);
+  $('barFill').style.width = '0';
+  $('summary').value = summaryText();
+  if (HAS_FORM) $('formLink').href = formUrl();
+  $('vName').textContent = S.name; $('vCls').textContent = S.cls; $('vScore').textContent = S.correct; $('vOut').textContent = '(out of ' + total + ')';
+  const miss = $('missList'); miss.replaceChildren();
+  S.missed.forEach(qi => {
+    const q = Q[qi], row = el('div', 'miss');
+    const n = el('p', 'mn'); n.textContent = 'Question ' + (qi + 1);
+    const t = el('p', 'mq'); t.textContent = q.q; t.dir = 'auto';
+    const a = el('p', 'ma'); a.textContent = q.type === 'drag' ? 'Correct pairs: ' + q.items.map(it => it.l).join(' | ') : 'Correct answer: ' + q.o[q.a];
+    row.append(n, t, a); miss.append(row);
+  });
+  $('review').hidden = S.missed.length === 0;
+  const st = $('saveStat'); st.className = 'savestat'; st.textContent = 'Sending your score to your teacher...';
+  $('manual').hidden = true;
+  show('done');
+  requestAnimationFrame(() => { $('barFill').style.width = pct + '%'; });
+  await startWrite;
+  const ok = await writeDoc('done');
+  if (ok) { st.className = 'savestat ok'; st.textContent = 'Your score was sent to your teacher.'; }
+  else { st.className = 'savestat bad'; st.textContent = 'Your score is not sent yet. Please send it with the step below.'; $('manual').hidden = false; }
+}
+
+async function copyText(text, area, btn) {
+  const old = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
+  catch (e) { area.hidden = false; area.focus(); area.select(); btn.textContent = 'Press Ctrl + C to copy'; }
+  setTimeout(() => { btn.textContent = old; }, 2200);
+}
+
+/* ---------- teacher board ---------- */
+let tUnsub = null;
+async function initTeacher() {
+  const u = await userP;
+  let teacher = false;
+  try { teacher = !!(u && ((u.isOwner && u.isOwner()) || (u.canEdit && u.canEdit()))); } catch (e) {}
+  if (teacher) $('teacherBtn').hidden = false;
+}
+async function openTeacher() {
+  show('teacher');
+  const db = await dbP;
+  if (!db) { $('tCount').textContent = 'The database is not available in this view.'; return; }
+  if (tUnsub) return;
+  tUnsub = db.collection('results').orderBy('startedAt', 'desc').limit(500).onSnapshot(renderBoard, () => { $('tCount').textContent = 'Could not load results.'; tUnsub = null; });
+}
+let tRows = [], pendingDel = null;
+const CLASS_ORDER = ['5B1', '5B2', '5B3', '5B4'];
+function renderBoard(snap) {
+  tRows = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+  if (pendingDel && !tRows.some(r => r.id === pendingDel)) pendingDel = null;
+  drawBoard();
+}
+async function deleteRecord(id) {
+  const db = await dbP;
+  pendingDel = null;
+  if (!db) { drawBoard(); return; }
+  try { await db.doc('results/' + id).delete(); }
+  catch (e) { $('tCount').textContent = 'Could not delete that record. Try again.'; drawBoard(); }
+}
+function btn(label, cls, onClick, aria) {
+  const b = el('button', 'btn small ' + cls); b.type = 'button'; b.textContent = label;
+  if (aria) b.setAttribute('aria-label', aria);
+  b.addEventListener('click', onClick); return b;
+}
+function drawBoard() {
+  const rows = tRows;
+  const done = rows.filter(r => r.status === 'done').length;
+  $('tCount').textContent = rows.length + ' students started, ' + done + ' finished.';
+  const groups = {};
+  rows.forEach(r => { const k = r.cls || 'No class'; (groups[k] = groups[k] || []).push(r); });
+  const keys = Object.keys(groups).sort((x, y) => {
+    const i = CLASS_ORDER.indexOf(x), j = CLASS_ORDER.indexOf(y);
+    return (i < 0 ? 99 : i) - (j < 0 ? 99 : j) || x.localeCompare(y);
+  });
+  const host = $('tGroups'); host.replaceChildren();
+  const lines = [], miss = {};
+  if (!keys.length) { const p = el('p', 'note'); p.textContent = 'No students yet. Results appear here as students start.'; host.append(p); }
+  keys.forEach(k => {
+    const list = groups[k].slice().sort((x, y) => (x.name || '').localeCompare(y.name || ''));
+    const fin = list.filter(r => r.status === 'done').length;
+    const box = el('div', 'tgroup');
+    const h = el('h3'); h.textContent = k + ' · ' + list.length + (list.length === 1 ? ' student' : ' students') + ', ' + fin + ' finished';
+    const wrap = el('div', 'tablewrap'), table = el('table'), thead = el('thead'), hr = el('tr');
+    ['Name', 'Score', 'Status', 'Time', ''].forEach(x => { const th = el('th'); th.textContent = x; hr.append(th); });
+    thead.append(hr); table.append(thead);
+    const body = el('tbody');
+    lines.push(k);
+    list.forEach(r => {
+      const tr = el('tr');
+      const nm = el('td', 'nm'); nm.textContent = r.name || ''; nm.dir = 'auto'; tr.append(nm);
+      const sc = el('td'); sc.textContent = r.status === 'done' ? r.correct + '/' + r.total : '-'; tr.append(sc);
+      const st = el('td'), pill = el('span', 'pill ' + (r.status === 'done' ? 'done' : 'going'));
+      pill.textContent = r.status === 'done' ? 'Finished' : 'In progress'; st.append(pill); tr.append(st);
+      const tm = el('td'); tm.textContent = r.status === 'done' && r.secs != null ? fmtTime(r.secs) : '-'; tr.append(tm);
+      const ac = el('td', 'act');
+      if (pendingDel === r.id) {
+        const ask = el('span', 'ask'); ask.textContent = 'Delete this record?'; ac.append(ask);
+        ac.append(btn('Yes, delete', 'danger solid', () => deleteRecord(r.id), 'Yes, delete the record for ' + (r.name || 'this student')));
+        ac.append(btn('Keep', 'ghost', () => { pendingDel = null; drawBoard(); }));
+      } else {
+        ac.append(btn('Delete', 'danger', () => { pendingDel = r.id; drawBoard(); }, 'Delete the record for ' + (r.name || 'this student')));
+      }
+      tr.append(ac); body.append(tr);
+      lines.push(r.name + ' | ' + (r.status === 'done' ? r.correct + '/' + r.total : 'in progress'));
+      (r.missed || []).forEach(n => { miss[n] = (miss[n] || 0) + 1; });
+    });
+    lines.push('');
+    table.append(body); wrap.append(table); box.append(h, wrap); host.append(box);
+  });
+  const top = Object.entries(miss).sort((x, y) => y[1] - x[1]).slice(0, 5);
+  const ol = $('tMost'); ol.replaceChildren();
+  if (!top.length) { const li = el('li'); li.textContent = 'No missed questions yet.'; ol.append(li); }
+  top.forEach(([n, c]) => { const q = Q[n - 1]; if (!q) return; const li = el('li'); li.textContent = q.q + ' (' + c + (c === 1 ? ' student)' : ' students)'); ol.append(li); });
+  $('tText').value = lines.join('\n').trim();
+}
+
+/* ---------- wiring ---------- */
+$('startForm').addEventListener('submit', startGame);
+$('next').addEventListener('click', next);
+$('again').addEventListener('click', () => { show('welcome'); });
+$('copyRes').addEventListener('click', () => copyText(summaryText(), $('summary'), $('copyRes')));
+$('teacherBtn').addEventListener('click', openTeacher);
+$('tBack').addEventListener('click', () => show('welcome'));
+$('tCopy').addEventListener('click', () => copyText($('tText').value, $('tText'), $('tCopy')));
+document.addEventListener('keydown', e => {
+  if ($('play').hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (!S.locked) {
+    if (S.dg) return;
+    const m = { a: 0, b: 1, c: 2, d: 3, '1': 0, '2': 1, '3': 2, '4': 3 }[k];
+    if (m !== undefined) pick(S.opts[m]);
+  } else if (k === 'enter' && document.activeElement !== $('next')) { e.preventDefault(); next(); }
+});
+$('nq').textContent = Q.length;
+initTeacher();
+</script>
